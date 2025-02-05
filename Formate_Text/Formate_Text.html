@@ -30,19 +30,25 @@
         }
         textarea {
             width: 100%;
-            height: 200px; /* Increased height */
-            max-height: 400px; /* Added max height */
+            height: 200px;
+            max-height: 400px;
             margin-bottom: 10px;
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #ccc;
-            resize: vertical; /* Allow vertical resize */
+            resize: vertical;
             font-size: 16px;
-            overflow-y: auto; /* Enable vertical scrolling */
+            overflow-y: auto;
+        }
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 8px 12px;
+            font-size: 14px;
             border: none;
             border-radius: 8px;
             background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 64%, rgba(252,176,69,1) 100%);
@@ -54,54 +60,114 @@
         button:hover {
             transform: scale(1.05);
         }
+        .active {
+            background: #333;
+        }
         #output {
             margin-top: 20px;
             padding: 15px;
             border-radius: 8px;
             background-color: #f0f0f0;
-            white-space: pre-line;
             text-align: left;
             font-size: 16px;
             font-weight: 500;
-            max-height: 300px; /* Added max height */
-            overflow-y: auto; /* Enable scrolling */
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>📝 <font>Text Formatter</font> </h2>
+        <h2>📝 Text Formatter</h2>
         <textarea id="inputText" placeholder="Enter unformatted text..."></textarea><br>
+        
+        <div class="toolbar">
+            <button onclick="toggleStyle('bold')"><b>B</b></button>
+            <button onclick="toggleStyle('italic')"><i>I</i></button>
+            <button onclick="toggleStyle('underline')"><u>U</u></button>
+            <button onclick="toggleList('bullet')">• Bullet</button>
+            <button onclick="toggleList('number')">1. Number</button>
+        </div>
+
+        <div class="toolbar">
+            <button onclick="setAlignment('left')">⬅ Left</button>
+            <button onclick="setAlignment('center')">⬜ Center</button>
+            <button onclick="setAlignment('right')">➡ Right</button>
+            <button onclick="setAlignment('justify')">📏 Justify</button>
+        </div>
+
         <button onclick="formatText()">✨ Format Text</button>
         <button onclick="saveText()">💾 Save Text</button>
+
         <div id="output"></div>
     </div>
     
     <script>
+        let isBold = false, isItalic = false, isUnderline = false, listType = '';
+
+        function toggleStyle(style) {
+            if (style === 'bold') isBold = !isBold;
+            if (style === 'italic') isItalic = !isItalic;
+            if (style === 'underline') isUnderline = !isUnderline;
+        }
+
+        function toggleList(type) {
+            if (listType === type) {
+                listType = ''; 
+            } else {
+                listType = type;
+            }
+        }
+
         function formatText() {
             let input = document.getElementById("inputText").value;
             let lines = input.split('\n');
             let formattedText = "";
-            
+            let listTag = listType === 'bullet' ? 'ul' : 'ol';
+            let openList = false;
+
             lines.forEach(line => {
                 line = line.trim();
+                let styledText = line;
+
+                if (isBold) styledText = `<b>${styledText}</b>`;
+                if (isItalic) styledText = `<i>${styledText}</i>`;
+                if (isUnderline) styledText = `<u>${styledText}</u>`;
+
                 if (line.endsWith(':')) {
-                    formattedText += `\n<strong>${line}</strong>\n`;
+                    if (openList) {
+                        formattedText += `</${listTag}>`;
+                        openList = false;
+                    }
+                    formattedText += `<strong>${styledText}</strong>`;
                 } else if (line !== "") {
-                    formattedText += `• ${line}\n`;
+                    if (!openList) {
+                        formattedText += `<${listTag}>`;
+                        openList = true;
+                    }
+                    formattedText += `<li>${styledText}</li>`;
                 }
             });
-            
-            document.getElementById("output").innerHTML = formattedText.replace(/\n/g, "<br>");
+
+            if (openList) {
+                formattedText += `</${listTag}>`;
+            }
+
+            document.getElementById("output").innerHTML = formattedText;
         }
-        
+
         function saveText() {
-            let textToSave = document.getElementById("output").innerText;
-            let blob = new Blob([textToSave], { type: "text/plain" });
+            let textToSave = document.getElementById("output").innerHTML;
+            let blob = new Blob([textToSave], { type: "text/html" });
             let a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = "formatted_text.txt";
+            a.download = "formatted_text.html";
             a.click();
+        }
+
+        function setAlignment(alignType) {
+            document.getElementById("output").style.textAlign = alignType;
         }
     </script>
 </body>
