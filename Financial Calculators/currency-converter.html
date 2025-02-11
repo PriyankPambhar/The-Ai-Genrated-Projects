@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e2e8f0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;
+            background-color: #175676;
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            text-align: center;
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            width: 300px; 
+            height: 400px; 
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007aff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        .results {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .results p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">Currency Converter 💱</div>
+    </header>
+    <div class="container">
+        <form id="currency-form">
+            <div class="form-group">
+                <label for="currency-amount">Amount:</label>
+                <input type="number" id="currency-amount" required>
+            </div>
+            <div class="form-group">
+                <label for="currency-from">Convert From:</label>
+                <select id="currency-from">
+                    <!-- List of 26 currencies -->
+                    <option value="USD">USD - United States Dollar</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="GBP">GBP - British Pound</option>
+                    <option value="AUD">AUD - Australian Dollar</option>
+                    <option value="CAD">CAD - Canadian Dollar</option>
+                    <option value="CHF">CHF - Swiss Franc</option>
+                    <option value="CNY">CNY - Chinese Yuan</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                    <option value="INR">INR - Indian Rupee</option>
+                    <option value="SGD">SGD - Singapore Dollar</option>
+                    <option value="HKD">HKD - Hong Kong Dollar</option>
+                    <option value="MXN">MXN - Mexican Peso</option>
+                    <option value="SEK">SEK - Swedish Krona</option>
+                    <option value="NZD">NZD - New Zealand Dollar</option>
+                    <option value="ZAR">ZAR - South African Rand</option>
+                    <option value="BRL">BRL - Brazilian Real</option>
+                    <option value="KRW">KRW - South Korean Won</option>
+                    <option value="SAR">SAR - Saudi Riyal</option>
+                    <option value="AED">AED - United Arab Emirates Dirham</option>
+                    <option value="MYR">MYR - Malaysian Ringgit</option>
+                    <option value="IDR">IDR - Indonesian Rupiah</option>
+                    <option value="THB">THB - Thai Baht</option>
+                    <option value="VND">VND - Vietnamese Dong</option>
+                    <option value="RUB">RUB - Russian Ruble</option>
+                    <option value="PLN">PLN - Polish Zloty</option>
+                    <option value="TRY">TRY - Turkish Lira</option>
+                    <option value="HUF">HUF - Hungarian Forint</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="currency-to">Convert To:</label>
+                <select id="currency-to">
+                    <option value="USD">USD - United States Dollar</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="GBP">GBP - British Pound</option>
+                    <option value="AUD">AUD - Australian Dollar</option>
+                    <option value="CAD">CAD - Canadian Dollar</option>
+                    <option value="CHF">CHF - Swiss Franc</option>
+                    <option value="CNY">CNY - Chinese Yuan</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                    <option value="INR">INR - Indian Rupee</option>
+                    <option value="SGD">SGD - Singapore Dollar</option>
+                    <option value="HKD">HKD - Hong Kong Dollar</option>
+                    <option value="MXN">MXN - Mexican Peso</option>
+                    <option value="SEK">SEK - Swedish Krona</option>
+                    <option value="NZD">NZD - New Zealand Dollar</option>
+                    <option value="ZAR">ZAR - South African Rand</option>
+                    <option value="BRL">BRL - Brazilian Real</option>
+                    <option value="KRW">KRW - South Korean Won</option>
+                    <option value="SAR">SAR - Saudi Riyal</option>
+                    <option value="AED">AED - United Arab Emirates Dirham</option>
+                    <option value="MYR">MYR - Malaysian Ringgit</option>
+                    <option value="IDR">IDR - Indonesian Rupiah</option>
+                    <option value="THB">THB - Thai Baht</option>
+                    <option value="VND">VND - Vietnamese Dong</option>
+                    <option value="RUB">RUB - Russian Ruble</option>
+                    <option value="PLN">PLN - Polish Zloty</option>
+                    <option value="TRY">TRY - Turkish Lira</option>
+                    <option value="HUF">HUF - Hungarian Forint</option>
+                </select>
+            </div>
+            <button type="submit">Convert</button>
+        </form>
+        <div id="currency-results" class="results">
+            <h2>Results</h2>
+            <p id="currency-converted-amount"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('currency-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('currency-amount').value);
+            const currencyFrom = document.getElementById('currency-from').value;
+            const currencyTo = document.getElementById('currency-to').value;
+
+            if (currencyFrom === currencyTo) {
+                alert('Please select different currencies to convert.');
+                return;
+            }
+
+            // Fetch the latest rates from the API
+            fetch(`https://api.exchangerate-api.com/v4/latest/${currencyFrom}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.rates[currencyTo]) {
+                        const convertedAmount = amount * data.rates[currencyTo];
+                        document.getElementById('currency-converted-amount').textContent = `Converted Amount: ${currencyTo.toUpperCase()} ${convertedAmount.toFixed(2)}`;
+                        document.getElementById('currency-results').classList.add('show');
+                    } else {
+                        alert('Error retrieving exchange rates.');
+                    }
+                })
+                .catch(() => {
+                    alert('Error connecting to the currency API.');
+                });
+        });
+    </script>
+</body>
+</html>
