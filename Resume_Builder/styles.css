@@ -1,0 +1,120 @@
+/* General Styles */
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f5f5f7;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #fff;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.navbar .navbar-brand {
+    font-weight: 700;
+    font-size: 28px;
+    color: #333;
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: #007aff;
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 20px;
+}
+
+/* Form Section */
+.card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card h4 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    transition: border 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007aff;
+    box-shadow: 0 0 5px rgba(0, 122, 255, 0.3);
+}
+
+/* Resume Preview Section */
+#resume-preview {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+#resume-content h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #007aff;
+    text-align: center;
+}
+
+#resume-content p {
+    font-size: 16px;
+    font-weight: 400;
+    color: #444;
+    line-height: 1.6;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #007aff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #005ecb;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
