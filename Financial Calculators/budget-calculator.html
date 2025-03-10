@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Calculator</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #30343F; /* Gunmetal background */
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;
+            background-color: #1B2021; /* Eerie Black for headers */
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .header-title {
+            color: #fff;
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .container {
+            width: 350px;
+            background-color: #1B2021; /* Eerie Black for container */
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #555;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #4A4E57;
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #89023E; /* Murrey for buttons */
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #750133;
+        }
+
+        .results {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results h2 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .results p {
+            margin: 5px 0;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .suggestions {
+            margin-top: 20px;
+            background-color: #4A4E57;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .suggestions h3 {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .suggestions p {
+            color: #fff;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="budget-calculator.png" alt="Budget Calculator Logo">
+            <div class="header-title">Budget Calculator</div>
+        </div>
+    </header>
+    <div class="container">
+        <form id="budget-form">
+            <div class="form-group">
+                <label for="income">Total Income (₹):</label>
+                <input type="number" id="income" required>
+            </div>
+            <div class="form-group">
+                <label for="expenses">Total Expenses (₹):</label>
+                <input type="number" id="expenses" required>
+            </div>
+            <button type="submit">Calculate Balance</button>
+        </form>
+        <div id="budget-results" class="results">
+            <h2>Results</h2>
+            <p id="remaining-balance"></p>
+            <p id="budget-status"></p>
+        </div>
+        <div id="suggestions" class="suggestions" style="display:none;">
+            <h3>Suggestions</h3>
+            <p id="suggestion-message"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('budget-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const income = parseFloat(document.getElementById('income').value);
+            const expenses = parseFloat(document.getElementById('expenses').value);
+
+            if (isNaN(income) || income <= 0 || isNaN(expenses) || expenses < 0) {
+                alert('Please enter valid values for income and expenses.');
+                return;
+            }
+
+            // Calculate remaining balance
+            const remainingBalance = income - expenses;
+
+            // Determine the budget status and suggestion
+            let statusMessage = '';
+            let suggestionMessage = '';
+            if (remainingBalance > 0) {
+                statusMessage = 'You have a positive balance!';
+                suggestionMessage = 'Great job! You have some extra savings. Consider investing or saving for future goals.';
+            } else if (remainingBalance === 0) {
+                statusMessage = 'Your budget is balanced.';
+                suggestionMessage = 'You are balancing your budget well. Keep monitoring your income and expenses.';
+            } else {
+                statusMessage = 'You are over budget!';
+                suggestionMessage = 'Warning: You are over budget! Consider reducing non-essential expenses or increasing your income.';
+            }
+
+            // Display the results
+            document.getElementById('remaining-balance').textContent = `Remaining Balance: ₹${remainingBalance.toFixed(2)}`;
+            document.getElementById('budget-status').textContent = statusMessage;
+            document.getElementById('suggestion-message').textContent = suggestionMessage;
+
+            document.getElementById('budget-results').classList.add('show');
+            document.getElementById('suggestions').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

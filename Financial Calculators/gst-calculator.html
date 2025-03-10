@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Calculator</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #30343F; /* Gunmetal background */
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;
+            background-color: #1B2021; /* Eerie Black for headers */
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .header-title {
+            color: #fff;
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .container {
+            width: 350px;
+            background-color: #1B2021; /* Eerie Black for container */
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #555;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #4A4E57;
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #89023E; /* Murrey for buttons */
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #750133;
+        }
+
+        .results {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results h2 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .results p {
+            margin: 5px 0;
+            color: #fff;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="gst-calculator.png" alt="GST Calculator Logo">
+            <div class="header-title">GST Calculator</div>
+        </div>
+    </header>
+    <div class="container">
+        <form id="gst-form">
+            <div class="form-group">
+                <label for="item-amount">Item Amount (₹):</label>
+                <input type="number" id="item-amount" required>
+            </div>
+            <div class="form-group">
+                <label for="gst-rate">GST Rate (%):</label>
+                <input type="number" id="gst-rate" required>
+            </div>
+            <button type="submit">Calculate GST</button>
+        </form>
+        <div id="gst-results" class="results">
+            <h2>Results</h2>
+            <p id="gst-amount"></p>
+            <p id="total-amount"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('gst-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('item-amount').value);
+            const gstRate = parseFloat(document.getElementById('gst-rate').value);
+
+            if (isNaN(amount) || amount <= 0 || isNaN(gstRate) || gstRate <= 0) {
+                alert('Please enter valid values for amount and GST rate.');
+                return;
+            }
+
+            // Calculate GST and Total
+            const gstAmount = (amount * gstRate) / 100;
+            const totalAmount = amount + gstAmount;
+
+            // Display the results
+            document.getElementById('gst-amount').textContent = `GST Amount: ₹${gstAmount.toFixed(2)}`;
+            document.getElementById('total-amount').textContent = `Total Amount (Including GST): ₹${totalAmount.toFixed(2)}`;
+
+            document.getElementById('gst-results').classList.add('show');
+        });
+    </script>
+</body>
+</html>
