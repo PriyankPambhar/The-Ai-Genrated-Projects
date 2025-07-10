@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Speech Tools</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Speech Conversion Tools</h1>
+    <p>Text to Speech & Speech to Text</p>
+  </header>
+
+  <main>
+    <!-- Text to Speech -->
+    <h2>Text to Speech</h2>
+    <textarea id="textInput" placeholder="Type something here...">Hello! Welcome to your speech converter.</textarea>
+    <select id="voiceSelect"></select>
+    <button onclick="speakText()">Speak</button>
+
+    <!-- Speech to Text -->
+    <h2 style="margin-top: 50px;">Speech to Text</h2>
+    <button onclick="startListening()">Start Listening</button>
+    <p id="outputText">Your speech will appear here...</p>
+    <button onclick="downloadTXT()">Download as TXT</button>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Speech Tools Devloped Priyank</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
