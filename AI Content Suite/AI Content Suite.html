@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Blog, Image & SEO Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom loader animation */
+        @keyframes pulse-dots {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        .dot-loader div {
+            width: 12px;
+            height: 12px;
+            background-color: #818cf8;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-dots 1.4s infinite ease-in-out both;
+        }
+        .dot-loader .dot-1 { animation-delay: -0.32s; }
+        .dot-loader .dot-2 { animation-delay: -0.16s; }
+        
+        /* Custom styles for generated blog content */
+        .blog-content h1 { font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.2; color: #f3f4f6; }
+        .blog-content h2 { font-size: 1.875rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem; line-height: 1.3; color: #e5e7eb; border-bottom: 1px solid #4b5563; padding-bottom: 0.5rem; }
+        .blog-content h3 { font-size: 1.5rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; line-height: 1.4; color: #d1d5db; }
+        .blog-content p { margin-bottom: 1.25rem; line-height: 1.7; color: #9ca3af; }
+        .blog-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1.25rem; color: #9ca3af; }
+        .blog-content li { margin-bottom: 0.75rem; }
+        .blog-content strong { font-weight: 600; color: #d1d5db; }
+        .blog-content em { font-style: italic; color: #b0b7c3; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300 flex items-center justify-center min-h-screen p-4 antialiased">
+    <div class="w-full max-w-5xl mx-auto">
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl shadow-black/20 p-6 md:p-10 border border-gray-700">
+            <header class="text-center mb-10">
+                <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">AI Content Suite</h1>
+                <p class="text-gray-400 mt-3 text-lg">Generate blog posts, cover images, and SEO tags from a single topic.</p>
+            </header>
+
+            <!-- Input Section -->
+            <div class="space-y-6 mb-12">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="text" id="blogTopic" class="flex-grow w-full px-5 py-4 text-lg bg-gray-900 border-2 border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-300 text-white placeholder-gray-500" placeholder="e.g., 'The Future of Renewable Energy'">
+                    <button id="generateBtn" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-4 px-8 rounded-lg hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg">
+                        Generate All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div id="resultContainer" class="mt-10 space-y-12">
+                <!-- Image Section -->
+                <div id="imageSection">
+                    <div id="imageLoader" class="hidden flex-col items-center justify-center text-center py-8">
+                        <div class="dot-loader"><div class="dot-1"></div><div class="dot-2"></div><div class="dot-3"></div></div>
+                        <p class="text-gray-400 font-medium mt-4">Generating a unique image... 🎨</p>
+                    </div>
+                    <div id="imageOutputWrapper" class="hidden text-center">
+                         <h2 class="text-3xl font-bold text-gray-200 mb-6">Generated Image</h2>
+                        <img id="generatedImage" src="" alt="Generated blog image" class="rounded-xl shadow-lg shadow-black/30 inline-block max-w-full h-auto object-contain border-2 border-gray-700">
+                    </div>
+                    <div id="imageErrorContainer" class="hidden text-red-400 bg-red-900/50 border border-red-500 rounded-lg p-4 text-center"></div>
+                </div>
+
+                <!-- Blog Section -->
+                <div id="blogSection">
+                    <div id="blogLoader" class="hidden flex-col items-center justify-center text-center py-8">
+                        <div class="dot-loader"><div class="dot-1"></div><div class="dot-2"></div><div class="dot-3"></div></div>
+                        <p class="text-gray-400 font-medium mt-4">Generating your blog post... 🤖</p>
+                    </div>
+                    <div id="blogOutputWrapper" class="hidden">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-3xl font-bold text-gray-200">Generated Blog Post</h2>
+                            <button id="copyBtn" title="Copy Text" class="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-400 hover:text-white transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg></button>
+                        </div>
+                        <div id="blogOutput" class="prose max-w-none p-6 bg-gray-900/70 rounded-lg border border-gray-700 blog-content"></div>
+                        <div id="copySuccess" class="text-green-400 font-semibold mt-3 text-right hidden">Copied to clipboard! ✅</div>
+                    </div>
+                    <div id="blogErrorContainer" class="hidden text-red-400 bg-red-900/50 border border-red-500 rounded-lg p-4 text-center"></div>
+                </div>
+                
+                <!-- SEO Tags Section -->
+                <div id="seoSection">
+                    <div id="seoLoader" class="hidden flex-col items-center justify-center text-center py-8">
+                        <div class="dot-loader"><div class="dot-1"></div><div class="dot-2"></div><div class="dot-3"></div></div>
+                        <p class="text-gray-400 font-medium mt-4">Generating SEO tags... 🔍</p>
+                    </div>
+                    <div id="seoOutputWrapper" class="hidden">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-3xl font-bold text-gray-200">SEO Tags</h2>
+                            <button id="copyTagsBtn" title="Copy Tags" class="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-400 hover:text-white transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg></button>
+                        </div>
+                        <div id="seoOutput" class="p-5 bg-gray-900/70 rounded-lg border border-gray-700 text-gray-400 leading-relaxed"></div>
+                        <div id="copyTagsSuccess" class="text-green-400 font-semibold mt-3 text-right hidden">Tags copied to clipboard! ✅</div>
+                    </div>
+                    <div id="seoErrorContainer" class="hidden text-red-400 bg-red-900/50 border border-red-500 rounded-lg p-4 text-center"></div>
+                </div>
+
+            </div>
+        </div>
+        <footer class="text-center mt-8 text-gray-500 text-sm">
+            <p>Powered by Gemini AI. Please review generated content for accuracy.</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const generateBtn = document.getElementById('generateBtn');
+        const blogTopicInput = document.getElementById('blogTopic');
+        
+        const imageLoader = document.getElementById('imageLoader');
+        const imageOutputWrapper = document.getElementById('imageOutputWrapper');
+        const generatedImage = document.getElementById('generatedImage');
+        const imageErrorContainer = document.getElementById('imageErrorContainer');
+
+        const blogLoader = document.getElementById('blogLoader');
+        const blogOutputWrapper = document.getElementById('blogOutputWrapper');
+        const blogOutput = document.getElementById('blogOutput');
+        const blogErrorContainer = document.getElementById('blogErrorContainer');
+        const copyBtn = document.getElementById('copyBtn');
+        const copySuccess = document.getElementById('copySuccess');
+
+        const seoLoader = document.getElementById('seoLoader');
+        const seoOutputWrapper = document.getElementById('seoOutputWrapper');
+        const seoOutput = document.getElementById('seoOutput');
+        const seoErrorContainer = document.getElementById('seoErrorContainer');
+        const copyTagsBtn = document.getElementById('copyTagsBtn');
+        const copyTagsSuccess = document.getElementById('copyTagsSuccess');
+
+        const API_KEY = "AIzaSyCIkSSGa3B6zYegn0Xzw_KuuzIXqKXmxRY"; 
+        
+        let rawBlogContent = '';
+
+        /** Converts simple Markdown to HTML. */
+        function markdownToHtml(markdownText) {
+            let html = markdownText.replace(/^### (.*$)/gim, '<h3>$1</h3>').replace(/^## (.*$)/gim, '<h2>$1</h2>').replace(/^# (.*$)/gim, '<h1>$1</h1>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/^\s*[-*] (.*)/gm, '<ul><li>$1</li></ul>').replace(/<\/ul>\n<ul>/g, '').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+            if (!html.trim().startsWith('<h')) html = `<p>${html}</p>`;
+            if ((html.match(/<p>/g) || []).length > (html.match(/<\/p>/g) || []).length) html += '</p>';
+            return html.replace(/<p><\/p>/g, '');
+        }
+
+        /** Fetches content from an API with exponential backoff. */
+        async function fetchWithBackoff(url, payload, retries = 3, delay = 1000) {
+            try {
+                const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) {
+                    const errorBody = await response.json().catch(() => ({ error: { message: 'Could not parse error response from API.' } }));
+                    const errorMessage = errorBody?.error?.message || `Request failed with status ${response.status}`;
+                    const error = new Error(errorMessage);
+                    error.status = response.status;
+                    throw error;
+                }
+                return await response.json();
+            } catch (error) {
+                if (retries > 0) {
+                    await new Promise(res => setTimeout(res, delay));
+                    return fetchWithBackoff(url, payload, retries - 1, delay * 2);
+                }
+                throw error;
+            }
+        }
+
+        /** Displays a user-friendly error message. */
+        function displayError(container, error, type) {
+            console.error(`Error generating ${type}:`, error);
+            let userMessage = `Error: Could not generate ${type}. ${error.message}`;
+            if (error.status === 400) {
+                userMessage += " (Bad Request). Please check if the API key is valid.";
+            } else if (error.status === 403) {
+                 userMessage += " (Forbidden). Please ensure the API is enabled in your Google Cloud project and billing is active.";
+            } else if (error.status === 429) {
+                userMessage += " (Too Many Requests). Please wait a moment before trying again.";
+            }
+            container.textContent = userMessage;
+            container.classList.remove('hidden');
+        }
+
+        /** Generates and displays the blog post content. */
+        async function fetchBlogContent(topic) {
+            blogLoader.classList.remove('hidden');
+            blogErrorContainer.classList.add('hidden');
+            blogOutputWrapper.classList.add('hidden');
+            const prompt = `Write a detailed, engaging, and well-structured blog post on the topic: '${topic}'. The blog should be informative and easy to read. Include relevant emojis. The response should be in Markdown format, with a main title, headings, paragraphs, and bullet points.`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+            const TEXT_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+            try {
+                const data = await fetchWithBackoff(TEXT_API_URL, payload);
+                if (data.candidates && data.candidates[0].content.parts.length > 0) {
+                    rawBlogContent = data.candidates[0].content.parts[0].text;
+                    blogOutput.innerHTML = markdownToHtml(rawBlogContent);
+                    blogOutputWrapper.classList.remove('hidden');
+                } else { throw new Error("Received an empty or invalid response for blog content."); }
+            } catch (error) {
+                displayError(blogErrorContainer, error, 'blog post');
+            } finally {
+                blogLoader.classList.add('hidden');
+            }
+        }
+
+        /** Generates and displays the blog image using a two-step prompt process. */
+        async function fetchBlogImage(topic) {
+            imageLoader.classList.remove('hidden');
+            imageErrorContainer.classList.add('hidden');
+            imageOutputWrapper.classList.add('hidden');
+            
+            const TEXT_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+            const IMAGE_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${API_KEY}`;
+            
+            try {
+                // Step 1: Generate a dynamic, detailed prompt for the image
+                const promptGenPrompt = `Create a visually descriptive, artistic, and inspiring prompt for an AI image generator. The prompt should be a single, detailed sentence that captures the essence of the blog topic: '${topic}'. Focus on creating a visually stunning and relevant image.`;
+                const promptGenPayload = { contents: [{ parts: [{ text: promptGenPrompt }] }] };
+                const promptData = await fetchWithBackoff(TEXT_API_URL, promptGenPayload);
+                const imagePrompt = promptData?.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (!imagePrompt) {
+                    throw new Error("Could not generate a detailed image prompt.");
+                }
+                console.log("Generated Image Prompt:", imagePrompt);
+
+                // Step 2: Use the detailed prompt to generate the image
+                const imageGenPayload = {
+                    contents: [{
+                        parts: [{ text: imagePrompt }]
+                    }],
+                    generationConfig: {
+                        responseModalities: ['IMAGE', 'TEXT']
+                    },
+                };
+
+                const imageData = await fetchWithBackoff(IMAGE_API_URL, imageGenPayload);
+                const base64Data = imageData?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+
+                if (base64Data) {
+                    generatedImage.src = `data:image/png;base64,${base64Data}`;
+                    imageOutputWrapper.classList.remove('hidden');
+                } else {
+                    throw new Error("Received no image data from the API. The response might be empty or contain safety blocks.");
+                }
+            } catch (error) {
+                displayError(imageErrorContainer, error, 'image');
+            } finally {
+                imageLoader.classList.add('hidden');
+            }
+        }
+
+        /** Generates and displays SEO tags. */
+        async function fetchSeoTags(topic) {
+            seoLoader.classList.remove('hidden');
+            seoErrorContainer.classList.add('hidden');
+            seoOutputWrapper.classList.add('hidden');
+            const prompt = `Generate a list of 15-20 relevant SEO keywords and tags for a blog post about '${topic}'. The tags should be a single string of words, separated by commas. Do not include any introductory text, just the comma-separated list.`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+            const TEXT_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+            try {
+                const data = await fetchWithBackoff(TEXT_API_URL, payload);
+                if (data.candidates && data.candidates[0].content.parts.length > 0) {
+                    seoOutput.textContent = data.candidates[0].content.parts[0].text;
+                    seoOutputWrapper.classList.remove('hidden');
+                } else { throw new Error("Received an empty or invalid response for SEO tags."); }
+            } catch (error) {
+                displayError(seoErrorContainer, error, 'SEO tags');
+            } finally {
+                seoLoader.classList.add('hidden');
+            }
+        }
+
+        /** Copies text to clipboard and shows a success message. */
+        function copyToClipboard(element, successMessageElement) {
+            const textToCopy = element.textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                successMessageElement.classList.remove('hidden');
+                setTimeout(() => successMessageElement.classList.add('hidden'), 3000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        // Main event listener for the generate button
+        generateBtn.addEventListener('click', () => {
+            const topic = blogTopicInput.value.trim();
+            if (!topic) {
+                imageErrorContainer.classList.add('hidden');
+                seoErrorContainer.classList.add('hidden');
+                blogErrorContainer.textContent = "Please enter a blog topic.";
+                blogErrorContainer.classList.remove('hidden');
+                return;
+            }
+            copySuccess.classList.add('hidden');
+            copyTagsSuccess.classList.add('hidden');
+            
+            // Run all generation processes
+            fetchBlogContent(topic);
+            fetchBlogImage(topic);
+            fetchSeoTags(topic);
+        });
+
+        // Event listeners for copy buttons
+        copyBtn.addEventListener('click', () => {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = rawBlogContent; // Copy the raw markdown
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                copySuccess.classList.remove('hidden');
+                setTimeout(() => copySuccess.classList.add('hidden'), 3000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+            document.body.removeChild(tempTextArea);
+        });
+        copyTagsBtn.addEventListener('click', () => copyToClipboard(seoOutput, copyTagsSuccess));
+
+    </script>
+</body>
+</html>
